@@ -1,0 +1,6 @@
+<!doctype html><html><head><title>Express Routes</title></head><body>
+<h1>Express Route Demonstration</h1>
+<nav><a href="/">Home</a> | <a href="/about">About</a> | <a href="/contact">Contact</a> | <a href="/users">Users JSON</a></nav>
+<h2>POST a message</h2><form action="/message" method="POST"><input name="message" required><button>Submit</button></form>
+<h2>Submitted messages</h2><ul><% messages.forEach(function(m){ %><li><%= m %></li><% }) %></ul>
+</body></html>

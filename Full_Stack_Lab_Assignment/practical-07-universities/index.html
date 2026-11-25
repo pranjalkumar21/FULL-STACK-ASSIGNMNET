@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Universities by Country</title>
+<style>body{font-family:Arial;max-width:850px;margin:35px auto;padding:0 16px;background:#f8fafc}form{display:flex;gap:8px}input,button{padding:11px;border-radius:7px;border:1px solid #cbd5e1}input{flex:1}button{background:#2563eb;color:white;border:0}li{background:white;margin:9px 0;padding:14px;border-radius:8px}a{color:#2563eb}</style></head>
+<body><h1>Find Universities by Country</h1><form id="search"><input id="country" placeholder="Enter country (e.g. India)" required><button>Search</button></form><p id="status"></p><ul id="results"></ul>
+<script>
+const form=document.getElementById('search'),country=document.getElementById('country'),status=document.getElementById('status'),results=document.getElementById('results');
+form.onsubmit=async e=>{
+ e.preventDefault();results.innerHTML='';status.textContent='Loading universities...';
+ try{
+  const url='https://universities.hipolabs.com/search?country='+encodeURIComponent(country.value.trim());
+  const response=await fetch(url);if(!response.ok)throw new Error('API error');
+  const data=await response.json();status.textContent=data.length?`${data.length} universities found.`:'No universities found.';
+  data.forEach(u=>{
+   const li=document.createElement('li'),name=document.createElement('strong');name.textContent=u.name;
+   const state=document.createElement('p');state.textContent='State/Province: '+(u['state-province']||'Not provided');
+   const link=document.createElement('a');link.href=u.web_pages[0]||'#';link.textContent=u.web_pages[0]||'Website unavailable';link.target='_blank';link.rel='noopener';
+   li.append(name,state,link);results.appendChild(li);
+  });
+ }catch(err){status.textContent='Unable to fetch data. Check your connection and try again.'}
+};
+</script></body></html>

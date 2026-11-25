@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Snake and Ladder</title>
+<style>
+body{font-family:Arial;text-align:center;background:#fefce8;padding:16px}.board{display:grid;grid-template-columns:repeat(10, minmax(25px,1fr));max-width:600px;margin:18px auto;border:2px solid #713f12}
+.cell{aspect-ratio:1;border:1px solid #d6d3d1;display:grid;place-items:center;background:#fff;font-size:clamp(10px,2vw,16px);position:relative}
+.cell:nth-child(odd){background:#fef3c7}.player{color:#dc2626;font-weight:bold}.controls{margin:15px}
+button{padding:10px 16px;background:#15803d;color:white;border:0;border-radius:8px;cursor:pointer}
+</style></head><body><h1>Snake and Ladder</h1><p>Reach square 100 to win. Roll the dice to move.</p>
+<div id="board" class="board"></div><div class="controls"><button id="roll">Roll Dice</button> <strong id="status">Player 1: start at 0</strong></div>
+<script>
+const board=document.getElementById('board'),status=document.getElementById('status');
+const jumps={4:14,9:31,20:38,28:84,40:59,63:81,71:91,17:7,54:34,62:19,87:24,93:73,95:75,99:78};
+let position=0,finished=false;
+function draw(){
+ board.innerHTML='';
+ // Number cells from 100 at top-left in a serpentine layout.
+ for(let row=9;row>=0;row--){
+  const nums=Array.from({length:10},(_,i)=>row*10+i+1);
+  if(row%2===1)nums.reverse();
+  nums.forEach(n=>{const cell=document.createElement('div');cell.className='cell';cell.textContent=n;
+   if(jumps[n])cell.title=(jumps[n]>n?'Ladder to ':'Snake to ')+jumps[n];
+   if(position===n){const token=document.createElement('span');token.className='player';token.textContent='●';cell.appendChild(token)}
+   board.appendChild(cell);
+  });
+ }
+}
+document.getElementById('roll').onclick=()=>{
+ if(finished)return;const dice=Math.floor(Math.random()*6)+1;let next=position+dice;
+ if(next>100){status.textContent=`Rolled ${dice}. Need exact roll to reach 100.`;return}
+ position=next;let message=`Rolled ${dice}.`;
+ if(jumps[position]){const destination=jumps[position];message+=destination>position?' Ladder!':' Snake!';position=destination}
+ if(position===100){finished=true;message+=' You win!'}
+ status.textContent=message+` Position: ${position}`;draw();
+};
+draw();
+</script></body></html>

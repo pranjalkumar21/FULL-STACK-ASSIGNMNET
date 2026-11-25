@@ -1,0 +1,1 @@
+Run `npm install` and `npm start`, then open http://localhost:3000. Express provides GET and POST product API routes; the browser fetches and renders product details and submits new products. Data is in memory.

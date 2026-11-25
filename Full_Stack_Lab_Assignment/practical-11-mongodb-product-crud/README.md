@@ -1,0 +1,1 @@
+Copy `.env.example` to `.env` and set `MONGODB_URI`. Start MongoDB locally or use MongoDB Atlas. Run `npm install` then `npm start`. REST endpoints: GET `/products`, GET `/products/:id`, POST `/products`, PUT `/products/:id`, DELETE `/products/:id`. Do not commit your real `.env` or database password.
